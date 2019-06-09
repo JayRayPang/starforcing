@@ -66,35 +66,14 @@ func readProbabilities() probabilities {
   return p
 }
 
-var m map[int][15]int64 = readGearLevels()
-var pr probabilities = readProbabilities()
+var m map[int][15]int64
+var pr probabilities
+var nextCosts map[int]*big.Rat
 
-func expectedBooms(pr probabilities, level int) *big.Rat {
-  fail := pr.Fail[level - 10]
-  boom := pr.Destroy[level - 10]
-  success := pr.Success[level - 10]
-
-  expAtmpts := new(big.Rat)
-  expAtmpts.SetFrac(big.NewInt(1000), big.NewInt(success))
-
-  expFails := new(big.Rat)
-  expFails.Sub(expAtmpts, big.NewRat(1, 1))
-
-  expBoom := new(big.Rat)
-  expBoom.SetFrac(big.NewInt(boom), big.NewInt(boom + fail))
-  expBoom.Mul(expBoom, expFails)
-
-  downgrade := new(big.Rat)
-  downgrade.SetFrac(big.NewInt(fail), big.NewInt(boom + fail))
-
-  prevBooms := big.NewRat(0, 1)
-
-  for i := 12; i < level; i++ {
-    prevBooms.Add(prevBooms, expectedBooms(pr, i))
-  }
-
-  prevBooms.Mul(downgrade, prevBooms)
-  return expBoom.Add(expBoom, prevBooms)
+func init() {
+  m = readGearLevels()
+  pr = readProbabilities()
+  nextCosts = make(map[int]*big.Rat)
 }
 
 func isGeneralCase(level int) bool {
@@ -118,6 +97,10 @@ func nextStarCost(costs [15]int64, level int) *big.Rat {
   boom := pr.Destroy[i]
   success := pr.Success[i]
 
+  if val, ok := nextCosts[level]; ok {
+    return val
+  }
+
   cost := costs[i]
   pCost := func() int64 { if level<11 {return 0} else {return costs[i-1]} }()
   ppCost := func() int64 { if level<12 {return 0} else {return costs[i-2]} }()
@@ -126,6 +109,7 @@ func nextStarCost(costs [15]int64, level int) *big.Rat {
   expCost.Mul(big.NewRat(cost, 1), expAtmpts)
 
   if level == 10 {
+    nextCosts[level] = expCost
     return expCost
   }
 
@@ -133,6 +117,7 @@ func nextStarCost(costs [15]int64, level int) *big.Rat {
 
   if level == 11 {
     expCost.Add(expCost, failRatio.Mul(failRatio, nextStarCost(costs, 10)))
+    nextCosts[level] = expCost
     return expCost
   }
 
@@ -146,10 +131,12 @@ func nextStarCost(costs [15]int64, level int) *big.Rat {
     expCost.Add(expCost, dblFailCost)
     expCost.Add(expCost, failRatio)
     // TODO: add replacement cost
+    nextCosts[level] = expCost
     return expCost
   }
 
-  expPrevCost := nextStarCost(costs, level - 1)
+  expPrevCost := new(big.Rat)
+  expPrevCost.Set(nextStarCost(costs, level - 1))
   dblFailCost.Mul(dblFailRatio, big.NewRat(ppCost, 1))
 
   boomAtmpts := big.NewRat(boom, 1000)
@@ -165,6 +152,7 @@ func nextStarCost(costs [15]int64, level int) *big.Rat {
     expCost.Add(expCost, failRatio)
     expCost.Add(expCost, expPrevCost)
     // TODO: add replacement cost
+    nextCosts[level] = expCost
     return expCost
   }
 
@@ -185,6 +173,7 @@ func nextStarCost(costs [15]int64, level int) *big.Rat {
     expCost.Add(expCost, dblFailCost)
     expCost.Add(expCost, dblFailCost2)
     expCost.Add(expCost, returnCost)
+    nextCosts[level] = expCost
     return expCost
   }
 
@@ -192,6 +181,7 @@ func nextStarCost(costs [15]int64, level int) *big.Rat {
     returnCost.Mul(returnCost, big.NewRat(boom, 1000))
     returnCost.Mul(returnCost, big.NewRat(1000, success))
     expCost.Add(returnCost, expCost)
+    nextCosts[level] = expCost
     return expCost
   }
 
@@ -200,8 +190,8 @@ func nextStarCost(costs [15]int64, level int) *big.Rat {
     failRatio.Mul(failRatio, nextStarCost(costs, level - 1))
     expCost.Add(expCost, returnCost)
     expCost.Add(expCost, failRatio)
+    nextCosts[level] = expCost
     return expCost
-
   }
 
   return expCost
