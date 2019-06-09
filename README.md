@@ -17,7 +17,7 @@ The objective is to increase your levels as much as possible. At each level ![eq
 Starting from the level 12->13 enhancement, you also have the chance to lose your progress, and reset back to level 12. We denote this probability as ![equation](https://latex.codecogs.com/gif.latex?d_i). For example, when attempting to go from level 15->16 or level 21->22, we have a ![equation](https://latex.codecogs.com/gif.latex?d_%7B15%7D) and ![equation](https://latex.codecogs.com/gif.latex?d_%7B21%7D) chance of instantly dropping back down to level 12. However, starting from the level 12->13 enhancement and up to the level 16->17 enhancement, you can also choose to
 pay ![equation](https://latex.codecogs.com/gif.latex?2c_i) in order to remove this chance. Instead, your success rate will still be ![equation](https://latex.codecogs.com/gif.latex?s_i) and your failure rate will be ![equation](https://latex.codecogs.com/gif.latex?1-s_i).
 
-The goal of this calculator is to provide an expected cost of going from one level ![equation](https://latex.codecogs.com/gif.latex?i-1) to another level ![equation](https://latex.codecogs.com/gif.latex?b) such that ![equation](https://latex.codecogs.com/gif.latex?b%3Ea).
+The goal of this calculator is to provide an expected cost of going from one level ![equation](https://latex.codecogs.com/gif.latex?a) to another level ![equation](https://latex.codecogs.com/gif.latex?b) such that ![equation](https://latex.codecogs.com/gif.latex?b%3Ea).
 
 ## Use
 
