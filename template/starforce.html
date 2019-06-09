@@ -11,10 +11,10 @@
 <body>
 
   <div class="container">
-    <form method="get">
+    <form method="post">
 
       <span style="display:inline-block">
-        <label for="level" style="display:block">Equipment Level</label>
+        <h4>Equipment Level</h4>
         <select name="level" id="level">
           <option value="140">140</option>
           <option value="150" selected="selected">150</option>
@@ -23,12 +23,11 @@
         </select>
 
         <script>
-          if ((window.location.search).length > 0) {
-            document.getElementById('level').value = (window.location.search).slice(7, 10)
-          }
+            document.getElementById('level').value = {{.Level}};
         </script>
       </span><br><br>
 
+      <h4>Star Levels</h4>
       <span style="display:inline-block">
         <label for="start" style="display:block">Starting Star Level</label>
         <select name="start" id="start">
@@ -50,9 +49,7 @@
         </select>
 
         <script>
-          if ((window.location.search).length > 0) {
-            document.getElementById('start').value = (window.location.search).slice(17, 19)
-          }
+            document.getElementById('start').value = {{.Start}};
         </script>
       </span><br>
 
@@ -78,11 +75,31 @@
         </select>
 
         <script>
-          if ((window.location.search).length > 0) {
-            document.getElementById('end').value = (window.location.search).slice(24, 26)
-          }
+            document.getElementById('end').value = {{.End}};
         </script>
-      </span><br><br><br>
+      </span><br>
+
+      <div>
+        <h4>Events</h4>
+        <div>
+          <input type="checkbox" id="30%" name="event1">
+          <label for="30%">30% off</label>
+        </div>
+        <div>
+          <input type="checkbox" id="5/10/15" name="event2">
+          <label for="5/10/15">5/10/15 100%</label>
+        </div>
+        <div>
+          <input type="checkbox" id="10-15" name="event3">
+          <label for="10-15">10->15 no boom</label>
+        </div>
+      </div><br><br><br>
+
+      <script>
+        document.getElementById('30%').checked = "on" === {{.Event1}};
+        document.getElementById('5/10/15').checked = "on" === {{.Event2}};
+        document.getElementById('10-15').checked = "on" === {{.Event3}}
+      </script>
 
       <input type="submit" value="Go!">
     </form>

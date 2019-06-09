@@ -7,6 +7,7 @@ import (
   "bytes"
   "math/big"
   "net/http"
+  "net/url"
   "html/template"
   "strconv"
   "github.com/leekchan/accounting"
@@ -34,6 +35,12 @@ type formData struct {
 
 type Page struct {
   Amount string
+  Level string
+  Start string
+  End string
+  Event1 string
+  Event2 string
+  Event3 string
 }
 
 func readGearLevels() map[int][15]int64 {
@@ -212,18 +219,34 @@ func overallCosts(input formData) string {
   return ac.FormatMoney(res)
 }
 
+func checkEvents(p *Page, form url.Values) {
+  if val, ok := form["event1"]; ok {
+    p.Event1 = val[0]
+  }
+  if val, ok := form["event2"]; ok {
+    p.Event2 = val[0]
+  }
+  if val, ok := form["event3"]; ok {
+    p.Event3 = val[0]
+  }
+}
+
 func handler(w http.ResponseWriter, r *http.Request) {
   r.ParseForm()
-  p := Page{""}
+  p := Page{"", "150", "10", "17", "off", "off", "off"}
   if len(r.Form) > 0 {
     start, _ := strconv.Atoi(r.Form["start"][0])
     end, _ := strconv.Atoi(r.Form["end"][0])
+    p.Start = r.Form["start"][0]
+    p.End = r.Form["end"][0]
     if end <= start {
       p.Amount = "Invalid input"
     } else {
       level, _ := strconv.Atoi(r.Form["level"][0])
       input := formData{level, start, end}
       p.Amount = "Expected cost is " + overallCosts(input)
+      p.Level = r.Form["level"][0]
+      checkEvents(&p, r.Form)
     }
   }
   templates := template.Must(template.ParseFiles("template/starforce.html"))
