@@ -68,12 +68,12 @@ func readProbabilities() probabilities {
 
 var m map[int][15]int64
 var pr probabilities
-var nextCosts map[int]*big.Rat
+var nextCosts map[int]map[int]*big.Rat
 
 func init() {
   m = readGearLevels()
   pr = readProbabilities()
-  nextCosts = make(map[int]*big.Rat)
+  nextCosts = make(map[int]map[int]*big.Rat)
 }
 
 func isGeneralCase(level int) bool {
@@ -91,13 +91,19 @@ func isGeneralCase(level int) bool {
   return false
 }
 
-func nextStarCost(costs [15]int64, level int) *big.Rat {
+func nextStarCost(equipLevel int, level int) *big.Rat {
+  costs := m[equipLevel]
   i := level - 10
   fail := pr.Fail[i]
   boom := pr.Destroy[i]
   success := pr.Success[i]
 
-  if val, ok := nextCosts[level]; ok {
+  if _, ok := nextCosts[equipLevel]; !ok {
+    nextCosts[equipLevel] = make(map[int]*big.Rat)
+  }
+
+
+  if val, ok := nextCosts[equipLevel][level]; ok {
     return val
   }
 
@@ -109,15 +115,15 @@ func nextStarCost(costs [15]int64, level int) *big.Rat {
   expCost.Mul(big.NewRat(cost, 1), expAtmpts)
 
   if level == 10 {
-    nextCosts[level] = expCost
+    nextCosts[equipLevel][level] = expCost
     return expCost
   }
 
   failRatio := big.NewRat(fail, success)
 
   if level == 11 {
-    expCost.Add(expCost, failRatio.Mul(failRatio, nextStarCost(costs, 10)))
-    nextCosts[level] = expCost
+    expCost.Add(expCost, failRatio.Mul(failRatio, nextStarCost(equipLevel, 10)))
+    nextCosts[equipLevel][level] = expCost
     return expCost
   }
 
@@ -125,18 +131,18 @@ func nextStarCost(costs [15]int64, level int) *big.Rat {
   dblFailCost := new(big.Rat)
 
   if level == 12 {
-    dblFailCost.Add(big.NewRat(ppCost, 1), nextStarCost(costs, level - 1))
+    dblFailCost.Add(big.NewRat(ppCost, 1), nextStarCost(equipLevel, level - 1))
     dblFailCost.Mul(dblFailRatio, dblFailCost)
     failRatio.Mul(failRatio, big.NewRat(pCost, 1))
     expCost.Add(expCost, dblFailCost)
     expCost.Add(expCost, failRatio)
     // TODO: add replacement cost
-    nextCosts[level] = expCost
+    nextCosts[equipLevel][level] = expCost
     return expCost
   }
 
   expPrevCost := new(big.Rat)
-  expPrevCost.Set(nextStarCost(costs, level - 1))
+  expPrevCost.Set(nextStarCost(equipLevel, level - 1))
   dblFailCost.Mul(dblFailRatio, big.NewRat(ppCost, 1))
 
   boomAtmpts := big.NewRat(boom, 1000)
@@ -152,13 +158,13 @@ func nextStarCost(costs [15]int64, level int) *big.Rat {
     expCost.Add(expCost, failRatio)
     expCost.Add(expCost, expPrevCost)
     // TODO: add replacement cost
-    nextCosts[level] = expCost
+    nextCosts[equipLevel][level] = expCost
     return expCost
   }
 
   returnCost := big.NewRat(0, 1)
   for i := 12; i < level; i++ {
-    returnCost.Add(returnCost, nextStarCost(costs, i))
+    returnCost.Add(returnCost, nextStarCost(equipLevel, i))
   }
 
   if isGeneralCase(level) {
@@ -173,7 +179,7 @@ func nextStarCost(costs [15]int64, level int) *big.Rat {
     expCost.Add(expCost, dblFailCost)
     expCost.Add(expCost, dblFailCost2)
     expCost.Add(expCost, returnCost)
-    nextCosts[level] = expCost
+    nextCosts[equipLevel][level] = expCost
     return expCost
   }
 
@@ -181,16 +187,16 @@ func nextStarCost(costs [15]int64, level int) *big.Rat {
     returnCost.Mul(returnCost, big.NewRat(boom, 1000))
     returnCost.Mul(returnCost, big.NewRat(1000, success))
     expCost.Add(returnCost, expCost)
-    nextCosts[level] = expCost
+    nextCosts[equipLevel][level] = expCost
     return expCost
   }
 
   if level == 16 || level == 21 {
     returnCost.Mul(returnCost, boomAtmpts)
-    failRatio.Mul(failRatio, nextStarCost(costs, level - 1))
+    failRatio.Mul(failRatio, nextStarCost(equipLevel, level - 1))
     expCost.Add(expCost, returnCost)
     expCost.Add(expCost, failRatio)
-    nextCosts[level] = expCost
+    nextCosts[equipLevel][level] = expCost
     return expCost
   }
 
@@ -200,7 +206,7 @@ func nextStarCost(costs [15]int64, level int) *big.Rat {
 func overallCosts(input formData) string {
   res := big.NewRat(0, 1)
   for i := input.Start; i < input.End; i++ {
-    res.Add(res, nextStarCost(m[input.Level], i))
+    res.Add(res, nextStarCost(input.Level, i))
   }
   ac := accounting.Accounting{Symbol: "", Precision: 2}
   return ac.FormatMoney(res)
