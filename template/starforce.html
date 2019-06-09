@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta  charset="utf-8">
+
+  <title>Starforcing Calculator</title>
+
+  <link href="/static/css/starforce.css" rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+    <form method="get">
+
+      <span style="display:inline-block">
+        <label for="level" style="display:block">Equipment Level</label>
+        <select name="level" id="level">
+          <option value="150">150</option>
+          <option value="160">160</option>
+          <option value="200">200</option>
+        </select>
+
+        <script>
+          if ((window.location.search).length > 0) {
+            document.getElementById('level').value = (window.location.search).slice(7, 10)
+          }
+        </script>
+      </span><br><br>
+
+      <span style="display:inline-block">
+        <label for="start" style="display:block">Starting Star Level</label>
+        <select name="start" id="start">
+          <option value=10>10</option>
+          <option value=11>11</option>
+          <option value=12>12</option>
+          <option value=13>13</option>
+          <option value=14>14</option>
+          <option value=15>15</option>
+          <option value=16>16</option>
+          <option value=17>17</option>
+          <option value=18>18</option>
+          <option value=19>19</option>
+          <option value=20>20</option>
+          <option value=21>21</option>
+          <option value=22>22</option>
+          <option value=23>23</option>
+          <option value=24>24</option>
+        </select>
+
+        <script>
+          if ((window.location.search).length > 0) {
+            document.getElementById('start').value = (window.location.search).slice(17, 19)
+          }
+        </script>
+      </span><br>
+
+
+      <span style="display:inline-block">
+        <label for="end" style="display:block">Ending Star Level</label>
+        <select name="end" id="end">
+          <option value=11>11</option>
+          <option value=12>12</option>
+          <option value=13>13</option>
+          <option value=14>14</option>
+          <option value=15>15</option>
+          <option value=16>16</option>
+          <option value=17>17</option>
+          <option value=18>18</option>
+          <option value=19>19</option>
+          <option value=20>20</option>
+          <option value=21>21</option>
+          <option value=22>22</option>
+          <option value=23>23</option>
+          <option value=24>24</option>
+          <option value=25>25</option>
+        </select>
+
+        <script>
+          if ((window.location.search).length > 0) {
+            document.getElementById('end').value = (window.location.search).slice(24, 26)
+          }
+        </script>
+      </span><br><br><br>
+
+      <input type="submit" value="Go!">
+    </form>
+
+    <div>{{.Amount}}</div>
+  </div>
+ </body>
+ </html>`
