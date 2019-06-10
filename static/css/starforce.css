@@ -30,19 +30,21 @@ body {
 .form-style-3 label > span{
 	float: left;
 	width: 100px;
-	color: #F072A9;
-	font-weight: bold;
-	font-size: 13px;
-	text-shadow: 1px 1px 1px #fff;
+	/*color: #F072A9;*/
+  color: black;
+	/*font-weight: bold;*/
+	font-size: 14px;
+	/*text-shadow: 1px 1px 1px #fff;*/
 }
 
 .form-style-3 p {
   float: left;
   width: 400px;
-  color: #F072A9;
+  /*color: #F072A9;*/
+  color: black;
   font-weight: bold;
-  font-size: 13px;
-  text-shadow: 1px 1px 1px #fff;
+  font-size: 16px;
+  /*text-shadow: 1px 1px 1px #fff;*/
 }
 
 .form-style-3 fieldset{
@@ -50,29 +52,32 @@ body {
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	margin: 0px 0px 10px 0px;
-	border: 1px solid #FFD2D2;
+	/*border: 1px solid #FFD2D2;*/
+  border: 1px solid #000000;
 	padding: 20px;
-	background: #FFF4F4;
-	box-shadow: inset 0px 0px 15px #FFE5E5;
-	-moz-box-shadow: inset 0px 0px 15px #FFE5E5;
-	-webkit-box-shadow: inset 0px 0px 15px #FFE5E5;
+	/*background: #FFF4F4;*/
+  box-shadow: inset 0px 0px 15px #f5f5f5;
+  -moz-box-shadow: inset 0px 0px 15px #f5f5f5;
+  -webkit-box-shadow: inset 0px 0px 15px #f5f5f5;
 }
 
 .form-style-3 fieldset legend{
-	color: #FFA0C9;
-	border-top: 1px solid #FFD2D2;
-	border-left: 1px solid #FFD2D2;
-	border-right: 1px solid #FFD2D2;
+  /*color: #FFA0C9;*/
+  /*color: #EB3B88;*/
+  color: black;
+	border-top: 1px solid #000000;
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
 	border-radius: 5px 5px 0px 0px;
 	-webkit-border-radius: 5px 5px 0px 0px;
 	-moz-border-radius: 5px 5px 0px 0px;
-	background: #FFF4F4;
+	background: #f5f5f5;
 	padding: 0px 8px 3px 8px;
-	box-shadow: -0px -1px 2px #F1F1F1;
-	-moz-box-shadow:-0px -1px 2px #F1F1F1;
-	-webkit-box-shadow:-0px -1px 2px #F1F1F1;
+	box-shadow: -0px -1px 2px #f5f5f5;
+	-moz-box-shadow:-0px -1px 2px #f5f5f5;
+	-webkit-box-shadow:-0px -1px 2px #f5f5f5;
 	font-weight: normal;
-	font-size: 12px;
+	font-size: 14px;
 }
 
 .form-style-3 textarea{
@@ -88,31 +93,33 @@ body {
 .form-style-3 input[type=time],
 .form-style-3 input[type=url],
 .form-style-3 input[type=email],
-.form-style-3 select,
+/*.form-style-3 select,*/
 .form-style-3 textarea{
 	border-radius: 3px;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
-	border: 1px solid #FFC2DC;
+	border: 1px solid #000000;
 	outline: none;
-	color: #F072A9;
+	/*color: #F072A9;*/
+  color: black;
 	padding: 5px 8px 5px 8px;
-	box-shadow: inset 1px 1px 4px #FFD5E7;
-	-moz-box-shadow: inset 1px 1px 4px #FFD5E7;
-	-webkit-box-shadow: inset 1px 1px 4px #FFD5E7;
-	background: #FFEFF6;
+	/*box-shadow: inset 1px 1px 4px #FFD5E7;*/
+	/*-moz-box-shadow: inset 1px 1px 4px #FFD5E7;*/
+	/*-webkit-box-shadow: inset 1px 1px 4px #FFD5E7;*/
+	/*background: #FFEFF6;*/
 	width:50%;
 }
 
-.form-style-3  input[type=submit],
+/*.form-style-3  input[type=submit],*/
 .form-style-3  input[type=button]{
-	background: #EB3B88;
-	border: 1px solid #C94A81;
+	/*background: #EB3B88;*/
+	border: 1px solid #000000;
 	padding: 5px 15px 5px 15px;
-	color: #FFCBE2;
-	box-shadow: inset -1px -1px 3px #FF62A7;
-	-moz-box-shadow: inset -1px -1px 3px #FF62A7;
-	-webkit-box-shadow: inset -1px -1px 3px #FF62A7;
+  /*color: #FFCBE2;*/
+  /*color: white;*/
+  /*box-shadow: inset -1px -1px 3px #FF62A7;*/
+	/*-moz-box-shadow: inset -1px -1px 3px #FF62A7;*/
+	/*-webkit-box-shadow: inset -1px -1px 3px #FF62A7;*/
 	border-radius: 3px;
 	border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -138,10 +145,11 @@ body {
 .chkbox {
   /*padding-left: 15px;*/
   /*text-indent: -15px;*/
-	width: 150px;
-	color: #F072A9;
-	font-weight: bold;
-	font-size: 13px;
-	text-shadow: 1px 1px 1px #fff;
+	width: 200px;
+	/*color: #F072A9;*/
+  color: black;
+	/*font-weight: bold;*/
+	font-size: 14px;
+	/*text-shadow: 1px 1px 1px #fff;*/
 }
 

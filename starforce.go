@@ -1,6 +1,7 @@
 package main
 
 import (
+  "regexp"
   "log"
   "gopkg.in/yaml.v2"
   "io/ioutil"
@@ -76,11 +77,13 @@ func readProbabilities() probabilities {
 var m map[int][15]int64
 var pr probabilities
 var nextCosts map[int]map[int]*big.Rat
+var validPath *regexp.Regexp
 
 func init() {
   m = readGearLevels()
   pr = readProbabilities()
   nextCosts = make(map[int]map[int]*big.Rat)
+  validPath = regexp.MustCompile("^/$")
 }
 
 func isGeneralCase(level int) bool {
@@ -232,6 +235,11 @@ func checkEvents(p *Page, form url.Values) {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
+  x := validPath.FindStringSubmatch(r.URL.Path)
+  if x == nil {
+    http.NotFound(w, r)
+    return
+  }
   r.ParseForm()
   p := Page{"", "150", "10", "17", "off", "off", "off"}
   if len(r.Form) > 0 {
