@@ -10,26 +10,24 @@
 </head>
 <body>
 
-  <div class="container">
+  <div class="form-style-3">
     <form method="post">
 
-      <span style="display:inline-block">
-        <h4>Equipment Level</h4>
-        <select name="level" id="level">
-          <option value="140">140</option>
-          <option value="150" selected="selected">150</option>
-          <option value="160">160</option>
-          <option value="200">200</option>
-        </select>
+      <fieldset><legend>Equipment Level</legend>
+          <select name="level" id="level">
+            <option value="140">140</option>
+            <option value="150" selected="selected">150</option>
+            <option value="160">160</option>
+            <option value="200">200</option>
+          </select>
+      </fieldset>
 
         <script>
             document.getElementById('level').value = {{.Level}};
         </script>
-      </span><br><br>
 
-      <h4>Star Levels</h4>
-      <span style="display:inline-block">
-        <label for="start" style="display:block">Starting Star Level</label>
+      <fieldset><legend>Star Levels</legend>
+        <label for="start" style="display:block"><span>Starting Star Level</span>
         <select name="start" id="start">
           <option value=10 selected="selected">10</option>
           <option value=11>11</option>
@@ -47,15 +45,13 @@
           <option value=23>23</option>
           <option value=24>24</option>
         </select>
+        </label>
 
         <script>
             document.getElementById('start').value = {{.Start}};
         </script>
-      </span><br>
 
-
-      <span style="display:inline-block">
-        <label for="end" style="display:block">Ending Star Level</label>
+        <label for="end" style="display:block"><span>Ending Star Level</span>
         <select name="end" id="end">
           <option value=11>11</option>
           <option value=12>12</option>
@@ -73,27 +69,31 @@
           <option value=24>24</option>
           <option value=25>25</option>
         </select>
+        </label>
 
         <script>
             document.getElementById('end').value = {{.End}};
         </script>
-      </span><br>
+      </fieldset>
 
-      <div>
-        <h4>Events</h4>
+      <fieldset><legend>Events</legend>
         <div>
-          <input type="checkbox" id="30%" name="event1">
-          <label for="30%">30% off</label>
+        <label for="30%" class="chkbox">
+        <input type="checkbox" id="30%" name="event1">
+        30% off
+        </label>
+        <label for="5/10/15" class="chkbox">
+        <input type="checkbox" id="5/10/15" name="event2">
+        5/10/15 100%
+        <label>
+        <label for="10-15" class="chkbox">
+        <input type="checkbox" id="10-15" name="event3">
+        10->15 no boom
+        </label>
         </div>
-        <div>
-          <input type="checkbox" id="5/10/15" name="event2">
-          <label for="5/10/15">5/10/15 100%</label>
-        </div>
-        <div>
-          <input type="checkbox" id="10-15" name="event3">
-          <label for="10-15">10->15 no boom</label>
-        </div>
-      </div><br><br><br>
+
+        <input type="submit" value="Go!">
+      </fieldset>
 
       <script>
         document.getElementById('30%').checked = "on" === {{.Event1}};
@@ -101,10 +101,11 @@
         document.getElementById('10-15').checked = "on" === {{.Event3}}
       </script>
 
-      <input type="submit" value="Go!">
     </form>
 
-    <div>{{.Amount}}</div>
+    <fieldset><legend>Expected Costs</legend>
+      <p>{{.Amount}}</p>
+    </fieldset>
   </div>
  </body>
  </html>`
