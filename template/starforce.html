@@ -2,112 +2,151 @@
 <html lang="en">
 
 <head>
-  <meta  charset="utf-8">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <title>Starforcing Calculator</title>
+  <link href="/static/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+  <link href="/static/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+  <!-- Font special for pages-->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-  <link href="/static/css/starforce.css" rel="stylesheet">
+  <!-- Vendor CSS-->
+  <link href="/static/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+
+  <link href="/static/css/starforce.css" rel="stylesheet" media="all">
 </head>
 <body>
 
-  <h1>Starforcing Calculator</h1>
+  <div class="page-wrapper bg-gra-02 p-t-02 p-t-130 p-b-100 font-poppins">
+    <div class="wrapper wrapper--w680">
+      <div class="card card-4">
+        <div class="card-body">
+          <h2 class="title">Starforcing Calculator</h2>
+          <form method="POST">
+            <div class="row row-space">
+              <div class="col-1">
+                <div class="input-group">
+                  <label class="label">Equipment Level</label>
+                  <div class="rs-select2 js-select-simple select--no-search">
+                    <select name="level" id="level">
+                      <option value="140">140</option>
+                      <option value="150" selected="selected">150</option>
+                      <option value="160">160</option>
+                      <option value="200">200</option>
+                    </select>
+                    <div class="select-dropdown"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-  <div class="form-style-3">
-    <form method="post">
+            <div class="row row space">
+              <div class="col-2">
+                <div class="input group">
+                  <label class="label">Starting Star Level</label>
+                  <div class="rs-select2 js-select-simple">
+                    <select name="start" id="start">
+                      <option value="10" selected="selected">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                      <option value="13">13</option>
+                      <option value="14">14</option>
+                      <option value="15">15</option>
+                      <option value="16">16</option>
+                      <option value="17">17</option>
+                      <option value="18">18</option>
+                      <option value="19">19</option>
+                      <option value="20">20</option>
+                      <option value="21">21</option>
+                      <option value="22">22</option>
+                      <option value="23">23</option>
+                      <option value="24">24</option>
+                    </select>
+                  <div class="select-dropdown"></div>
+                  </div>
+                </div>
+              </div>
 
-      <fieldset><legend>Equipment Level</legend>
-          <select name="level" id="level">
-            <option value="140">140</option>
-            <option value="150" selected="selected">150</option>
-            <option value="160">160</option>
-            <option value="200">200</option>
-          </select>
-      </fieldset>
+              <div class="col-2">
+                <div class="input group">
+                  <label class="label">Ending Star Level</label>
+                  <div class="rs-select2 js-select-simple">
+                    <select name="end" id="end">
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                      <option value="13">13</option>
+                      <option value="14">14</option>
+                      <option value="15">15</option>
+                      <option value="16">16</option>
+                      <option value="17" selected="selected">17</option>
+                      <option value="18">18</option>
+                      <option value="19">19</option>
+                      <option value="20">20</option>
+                      <option value="21">21</option>
+                      <option value="22">22</option>
+                      <option value="23">23</option>
+                      <option value="24">24</option>
+                      <option value="25">25</option>
+                    </select>
+                    <div class="select-dropdown"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <script>
-            document.getElementById('level').value = {{.Level}};
-        </script>
+            <div class="row row-space">
+              <div class="col-3">
+                <div class="input-group">
+                  <label class="label">Events</label>
+                  <div class="p-t-10">
+                    <label class="radio-container m-r-45">30% off
+                      <input type="checkbox" id="30%" name="event1">
+                      <span class="checkmark"></span>
+                    </label>
+                    <label class="radio-container">Planeterium
+                      <input type="checkbox" id="5/10/15" name="event2">
+                      <span class="checkmark"></span>
+                    </label>
+                    <label class="radio-container">10/15/20
+                      <input type="checkbox" id="10-15" name="event3">
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-      <fieldset><legend>Star Levels</legend>
-        <label for="start" style="display:block"><span>Starting Star Level</span>
-        <select name="start" id="start">
-          <option value=10 selected="selected">10</option>
-          <option value=11>11</option>
-          <option value=12>12</option>
-          <option value=13>13</option>
-          <option value=14>14</option>
-          <option value=15>15</option>
-          <option value=16>16</option>
-          <option value=17>17</option>
-          <option value=18>18</option>
-          <option value=19>19</option>
-          <option value=20>20</option>
-          <option value=21>21</option>
-          <option value=22>22</option>
-          <option value=23>23</option>
-          <option value=24>24</option>
-        </select>
-        </label>
+            <div class="p-t-15">
+              <button class="btn btn--radius-2 btn--blue" type="submit">Submit</button>
+            </div>
+          </form>
 
-        <script>
-            document.getElementById('start').value = {{.Start}};
-        </script>
-
-        <label for="end" style="display:block"><span>Ending Star Level</span>
-        <select name="end" id="end">
-          <option value=11>11</option>
-          <option value=12>12</option>
-          <option value=13>13</option>
-          <option value=14>14</option>
-          <option value=15>15</option>
-          <option value=16>16</option>
-          <option value=17 selected="selected">17</option>
-          <option value=18>18</option>
-          <option value=19>19</option>
-          <option value=20>20</option>
-          <option value=21>21</option>
-          <option value=22>22</option>
-          <option value=23>23</option>
-          <option value=24>24</option>
-          <option value=25>25</option>
-        </select>
-        </label>
-
-        <script>
-            document.getElementById('end').value = {{.End}};
-        </script>
-      </fieldset>
-
-      <fieldset><legend>Events</legend>
-        <div>
-        <label for="30%" class="chkbox">
-        <input type="checkbox" id="30%" name="event1">
-        30% off
-        </label>
-        <label for="5/10/15" class="chkbox">
-        <input type="checkbox" id="5/10/15" name="event2">
-        5/10/15 100%
-        </label>
-        <label for="10-15" class="chkbox">
-        <input type="checkbox" id="10-15" name="event3">
-        10->15 no boom
-        </label>
         </div>
-
-        <input type="submit" value="Go!">
-      </fieldset>
-
-      <script>
-        document.getElementById('30%').checked = "on" === {{.Event1}};
-        document.getElementById('5/10/15').checked = "on" === {{.Event2}};
-        document.getElementById('10-15').checked = "on" === {{.Event3}}
-      </script>
-
-    </form>
-
-    <fieldset><legend>Expected Costs</legend>
-      <p>{{.Amount}}</p>
-    </fieldset>
+      </div>
+      <br>
+      <div class="card card-3">
+        <div class="card-body">
+          <center><h2 class="title">{{.Amount}}</h2></center>
+        </div>
+      </div>
+    </div>
   </div>
- </body>
- </html>
+
+  <script src="/static/vendor/jquery/jquery.min.js"></script>
+
+  <script>
+    document.getElementById('level').value = {{.Level}};
+    document.getElementById('start').value = {{.Start}};
+    document.getElementById('end').value = {{.End}};
+    document.getElementById('30%').checked = "on" === {{.Event1}};
+    document.getElementById('5/10/15').checked = "on" === {{.Event2}};
+    document.getElementById('10-15').checked = "on" === {{.Event3}}
+  </script>
+
+  <script src="/static/vendor/select2/select2.min.js"></script>
+  <script src="/static/js/global.js"></script>
+
+
+</body><!-- This template was made by ColorLib (https://colorlib.com) -->
+</html>
