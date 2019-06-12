@@ -15,17 +15,19 @@
   <link href="/static/vendor/select2/select2.min.css" rel="stylesheet" media="all">
 
   <link href="/static/css/starforce.css" rel="stylesheet" media="all">
+
 </head>
 <body>
 
-  <div class="page-wrapper bg-gra-02 p-t-02 p-t-130 p-b-100 font-poppins">
+  <div class="page-wrapper bg-gra-01 p-t-70 p-b-100 font-poppins">
     <div class="wrapper wrapper--w680">
       <div class="card card-4">
         <div class="card-body">
           <h2 class="title">Starforcing Calculator</h2>
           <form method="POST">
+
             <div class="row row-space">
-              <div class="col-1">
+              <div class="col-2">
                 <div class="input-group">
                   <label class="label">Equipment Level</label>
                   <div class="rs-select2 js-select-simple select--no-search">
@@ -39,55 +41,59 @@
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div class="row row space">
               <div class="col-2">
-                <div class="input group">
-                  <label class="label">Starting Star Level</label>
-                  <div class="rs-select2 js-select-simple">
-                    <select name="start" id="start">
-                      <option value="10" selected="selected">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                      <option value="13">13</option>
-                      <option value="14">14</option>
-                      <option value="15">15</option>
-                      <option value="16">16</option>
-                      <option value="17">17</option>
-                      <option value="18">18</option>
-                      <option value="19">19</option>
-                      <option value="20">20</option>
-                      <option value="21">21</option>
-                      <option value="22">22</option>
-                      <option value="23">23</option>
-                      <option value="24">24</option>
-                    </select>
-                  <div class="select-dropdown"></div>
-                  </div>
+                <div class="input-group">
+                  <label class="label">Replacement Cost</label>
+                  <input class="input--style-4" type="text" name="rcost" id="rcost">
                 </div>
               </div>
+            </div>
 
+            <div class="row row-space">
               <div class="col-2">
-                <div class="input group">
+                <label class="label">Starting Star Level</label>
+                <div class="rs-select2 js-select-simple">
+                  <select name="start" id="start">
+                    <option value="10">10&#9733;</option>
+                    <option value="11">11&#9733;</option>
+                    <option value="12">12&#9733;</option>
+                    <option value="13">13&#9733;</option>
+                    <option value="14">14&#9733;</option>
+                    <option value="15">15&#9733;</option>
+                    <option value="16">16&#9733;</option>
+                    <option value="17">17&#9733;</option>
+                    <option value="18">18&#9733;</option>
+                    <option value="19">19&#9733;</option>
+                    <option value="20">20&#9733;</option>
+                    <option value="21">21&#9733;</option>
+                    <option value="22">22&#9733;</option>
+                    <option value="23">23&#9733;</option>
+                    <option value="24">24&#9733;</option>
+                  </select>
+                  <div class="select-dropdown"></div>
+                </div>
+              </div>
+              <div class="col-2">
+                <div class="input-group">
                   <label class="label">Ending Star Level</label>
                   <div class="rs-select2 js-select-simple">
                     <select name="end" id="end">
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                      <option value="13">13</option>
-                      <option value="14">14</option>
-                      <option value="15">15</option>
-                      <option value="16">16</option>
-                      <option value="17" selected="selected">17</option>
-                      <option value="18">18</option>
-                      <option value="19">19</option>
-                      <option value="20">20</option>
-                      <option value="21">21</option>
-                      <option value="22">22</option>
-                      <option value="23">23</option>
-                      <option value="24">24</option>
-                      <option value="25">25</option>
+                      <option value="11">11&#9733;</option>
+                      <option value="12">12&#9733;</option>
+                      <option value="13">13&#9733;</option>
+                      <option value="14">14&#9733;</option>
+                      <option value="15">15&#9733;</option>
+                      <option value="16">16&#9733;</option>
+                      <option value="17" selected="selected">17&#9733;</option>
+                      <option value="18">18&#9733;</option>
+                      <option value="19">19&#9733;</option>
+                      <option value="20">20&#9733;</option>
+                      <option value="21">21&#9733;</option>
+                      <option value="22">22&#9733;</option>
+                      <option value="23">23&#9733;</option>
+                      <option value="24">24&#9733;</option>
+                      <option value="25">25&#9733;</option>
                     </select>
                     <div class="select-dropdown"></div>
                   </div>
@@ -96,18 +102,46 @@
             </div>
 
             <div class="row row-space">
-              <div class="col-3">
+              <div class="col-2">
+                <div class="input-group">
+                  <label class="label">Safeguarding</label>
+                  <div class="p-t-0">
+                    <label class="radio-container m-r-45">12&#9733; to 13&#9733;
+                      <input type="checkbox" id="sg12" name="sg12">
+                      <span class="checkmark"></span>
+                    </label><br>
+                    <label class="radio-container">13&#9733; to 14&#9733;
+                      <input type="checkbox" id="sg13" name="sg13">
+                      <span class="checkmark"></span>
+                    </label><br>
+                    <label class="radio-container">14&#9733; to 15&#9733;
+                      <input type="checkbox" id="sg14" name="sg14">
+                      <span class="checkmark"></span>
+                    </label><br>
+                    <label class="radio-container m-r-45">15&#9733; to 16&#9733;
+                      <input type="checkbox" id="sg15" name="sg15">
+                      <span class="checkmark"></span>
+                    </label><br>
+                    <label class="radio-container">16&#9733; to 17&#9733;
+                      <input type="checkbox" id="sg16" name="sg16">
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-2">
                 <div class="input-group">
                   <label class="label">Events</label>
-                  <div class="p-t-10">
+                  <div class="p-t-0">
                     <label class="radio-container m-r-45">30% off
                       <input type="checkbox" id="30%" name="event1">
                       <span class="checkmark"></span>
-                    </label>
+                    </label><br>
                     <label class="radio-container">Planeterium
                       <input type="checkbox" id="5/10/15" name="event2">
                       <span class="checkmark"></span>
-                    </label>
+                    </label><br>
                     <label class="radio-container">10/15/20
                       <input type="checkbox" id="10-15" name="event3">
                       <span class="checkmark"></span>
@@ -118,7 +152,7 @@
             </div>
 
             <div class="p-t-15">
-              <button class="btn btn--radius-2 btn--blue" type="submit">Submit</button>
+              <button class="btn btn--radius-2 btn--green" type="submit">Submit</button>
             </div>
           </form>
 
@@ -139,9 +173,15 @@
     document.getElementById('level').value = {{.Level}};
     document.getElementById('start').value = {{.Start}};
     document.getElementById('end').value = {{.End}};
+    document.getElementById('rcost').value = {{.ReplacementCost}};
     document.getElementById('30%').checked = "on" === {{.Event1}};
     document.getElementById('5/10/15').checked = "on" === {{.Event2}};
-    document.getElementById('10-15').checked = "on" === {{.Event3}}
+    document.getElementById('10-15').checked = "on" === {{.Event3}};
+    document.getElementById('sg12').checked= "on" === {{.Safeguards1}};
+    document.getElementById('sg13').checked = "on" === {{.Safeguards2}};
+    document.getElementById('sg14').checked = "on" === {{.Safeguards3}};
+    document.getElementById('sg15').checked = "on" === {{.Safeguards4}};
+    document.getElementById('sg16').checked = "on" === {{.Safeguards5}};
   </script>
 
   <script src="/static/vendor/select2/select2.min.js"></script>
