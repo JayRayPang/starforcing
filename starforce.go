@@ -131,6 +131,13 @@ func nextStarCost(inputs formData, level int) *big.Rat {
 			boom[i] = 0
 		}
 	}
+	if events[2] == "on" {
+		for i := 0; i < 10; i += 5 {
+			success[i] = 1000
+			fail[i] = 0
+			boom[i] = 0
+		}
+	}
 	for i := 0; i < 5; i++ {
 		if inputs.Safeguards[i] == "on" {
 			fail[i+2] += boom[i+2]
@@ -232,13 +239,12 @@ func nextStarCost(inputs formData, level int) *big.Rat {
 		boomAtmpts.Add(failRatio, boomAtmpts)
 		returnCost.Mul(boomAtmpts, returnCost)
 		expCost.Add(expCost, fCost)
-		if inputs.Safeguards[level-12] == "on" {
+		if level < 17 && inputs.Safeguards[level-12] == "on" {
 			dblFailCost.Mul(dblFailCost, big.NewRat(1, 2))
 		}
 		expCost.Add(expCost, dblFailCost)
 		expCost.Add(expCost, dblFailCost2)
 		expCost.Add(expCost, returnCost)
-		fmt.Println(returnCost)
 		expCost.Add(expCost, replacement)
 		nextCosts[level] = expCost
 		return expCost
