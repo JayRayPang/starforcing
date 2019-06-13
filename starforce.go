@@ -28,12 +28,12 @@ type probabilities struct {
 }
 
 type formData struct {
-	Level int
-	//Safeguards [5]bool
-	rCost int64 // replacement cost
-	//Events [4]bool
-	Start int
-	End   int
+	Level      int
+	Safeguards [5]string
+	rCost      int64 // replacement cost
+	events     [3]string
+	Start      int
+	End        int
 }
 
 type Page struct {
@@ -109,13 +109,35 @@ func isGeneralCase(level int) bool {
 	return false
 }
 
-func nextStarCost(equipLevel int, rCost int64, level int) *big.Rat {
-	costs := m[equipLevel]
+// equipLevel int, rCost int64, level int
+func nextStarCost(inputs formData, level int) *big.Rat {
+	equipLevel := inputs.Level
+	rCost := inputs.rCost
+	events := inputs.events
+	var costs = m[equipLevel]
+	if events[0] == "on" {
+		for i := 0; i < 15; i++ {
+			temp := int64(float64(costs[i]) * .7)
+			costs[i] = temp
+		}
+	}
 	i := level - 10
-	fail := pr.Fail[i]
-	boom := pr.Destroy[i]
-	success := pr.Success[i]
-
+	var fail = pr.Fail
+	var boom = pr.Destroy
+	var success = pr.Success
+	if events[1] == "on" {
+		for i := 0; i < 5; i++ {
+			fail[i] += boom[i]
+			boom[i] = 0
+		}
+	}
+	for i := 0; i < 5; i++ {
+		if inputs.Safeguards[i] == "on" {
+			fail[i+2] += boom[i+2]
+			boom[i+2] = 0
+			costs[i+2] = 2 * costs[i+2]
+		}
+	}
 	if val, ok := nextCosts[level]; ok {
 		return val
 	}
@@ -135,7 +157,7 @@ func nextStarCost(equipLevel int, rCost int64, level int) *big.Rat {
 			return costs[i-2]
 		}
 	}()
-	expAtmpts := big.NewRat(1000, success)
+	expAtmpts := big.NewRat(1000, success[i])
 	expCost := new(big.Rat)
 	expCost.Mul(big.NewRat(cost, 1), expAtmpts)
 
@@ -146,44 +168,44 @@ func nextStarCost(equipLevel int, rCost int64, level int) *big.Rat {
 		return expCost
 	}
 
-	failRatio := big.NewRat(fail, success)
+	failRatio := big.NewRat(fail[i], success[i])
 
 	if level == 11 {
-		temp := nextStarCost(equipLevel, rCost, 10)
+		temp := nextStarCost(inputs, level-1)
 		expCost.Add(expCost, failRatio.Mul(failRatio, temp))
 		nextCosts[level] = expCost
 		return expCost
 	}
 
-	dblFailRatio := big.NewRat(fail*pr.Fail[level-11], success*1000)
+	dblFailRatio := big.NewRat(fail[i]*fail[level-11], success[i]*1000)
 	dblFailCost := new(big.Rat)
 
 	if level == 12 {
-		temp := nextStarCost(equipLevel, rCost, level-1)
+		temp := nextStarCost(inputs, level-1)
 		dblFailCost.Add(big.NewRat(ppCost, 1), temp)
 		dblFailCost.Mul(dblFailRatio, dblFailCost)
 		failRatio.Mul(failRatio, big.NewRat(pCost, 1))
 		expCost.Add(expCost, dblFailCost)
 		expCost.Add(expCost, failRatio)
-		replacement.Mul(big.NewRat(boom, success), big.NewRat(rCost, 1))
+		replacement.Mul(big.NewRat(boom[i], success[i]), big.NewRat(rCost, 1))
 		expCost.Add(expCost, replacement)
 		nextCosts[level] = expCost
 		return expCost
 	}
 
 	expPrevCost := new(big.Rat)
-	expPrevCost.Set(nextStarCost(equipLevel, rCost, level-1))
+	expPrevCost.Set(nextStarCost(inputs, level-1))
 	dblFailCost.Mul(dblFailRatio, big.NewRat(ppCost, 1))
 
-	boomAtmpts := big.NewRat(boom, 1000)
+	boomAtmpts := big.NewRat(boom[i], 1000)
 	boomAtmpts.Mul(boomAtmpts, expAtmpts)
 
-	replacement.Mul(failRatio, big.NewRat(pr.Destroy[i-1], 1000))
-	replacement.Add(replacement, big.NewRat(boom, success))
+	replacement.Mul(failRatio, big.NewRat(boom[i-1], 1000))
+	replacement.Add(replacement, big.NewRat(boom[i], success[i]))
 	replacement.Mul(big.NewRat(rCost, 1), replacement)
 
 	if level == 13 {
-		noSuccess := big.NewRat(1000-pr.Success[i-1], 1000)
+		noSuccess := big.NewRat(1000-success[i-1], 1000)
 		noSuccess.Mul(failRatio, noSuccess)
 		noSuccess.Add(noSuccess, boomAtmpts)
 		expPrevCost.Mul(expPrevCost, noSuccess)
@@ -198,7 +220,7 @@ func nextStarCost(equipLevel int, rCost int64, level int) *big.Rat {
 
 	returnCost := big.NewRat(0, 1)
 	for i := 12; i < level; i++ {
-		returnCost.Add(returnCost, nextStarCost(equipLevel, rCost, i))
+		returnCost.Add(returnCost, nextStarCost(inputs, i))
 	}
 
 	if isGeneralCase(level) {
@@ -206,22 +228,26 @@ func nextStarCost(equipLevel int, rCost int64, level int) *big.Rat {
 		dblFailCost2.Mul(dblFailRatio, expPrevCost)
 		fCost := new(big.Rat)
 		fCost.Mul(failRatio, big.NewRat(pCost, 1))
-		failRatio.Mul(failRatio, big.NewRat(pr.Destroy[i-1], 1000))
+		failRatio.Mul(failRatio, big.NewRat(boom[i-1], 1000))
 		boomAtmpts.Add(failRatio, boomAtmpts)
 		returnCost.Mul(boomAtmpts, returnCost)
 		expCost.Add(expCost, fCost)
+		if inputs.Safeguards[level-12] == "on" {
+			dblFailCost.Mul(dblFailCost, big.NewRat(1, 2))
+		}
 		expCost.Add(expCost, dblFailCost)
 		expCost.Add(expCost, dblFailCost2)
 		expCost.Add(expCost, returnCost)
+		fmt.Println(returnCost)
 		expCost.Add(expCost, replacement)
 		nextCosts[level] = expCost
 		return expCost
 	}
 
 	if level == 15 || level == 20 {
-		replacement.Mul(big.NewRat(boom, success), big.NewRat(rCost, 1))
-		returnCost.Mul(returnCost, big.NewRat(boom, 1000))
-		returnCost.Mul(returnCost, big.NewRat(1000, success))
+		replacement.Mul(big.NewRat(boom[i], success[i]), big.NewRat(rCost, 1))
+		returnCost.Mul(returnCost, big.NewRat(boom[i], 1000))
+		returnCost.Mul(returnCost, big.NewRat(1000, success[i]))
 		expCost.Add(returnCost, expCost)
 		expCost.Add(replacement, expCost)
 		nextCosts[level] = expCost
@@ -229,9 +255,9 @@ func nextStarCost(equipLevel int, rCost int64, level int) *big.Rat {
 	}
 
 	if level == 16 || level == 21 {
-		replacement.Mul(big.NewRat(boom, success), big.NewRat(rCost, 1))
+		replacement.Mul(big.NewRat(boom[i], success[i]), big.NewRat(rCost, 1))
 		returnCost.Mul(returnCost, boomAtmpts)
-		failRatio.Mul(failRatio, nextStarCost(equipLevel, rCost, level-1))
+		failRatio.Mul(failRatio, nextStarCost(inputs, level-1))
 		expCost.Add(expCost, returnCost)
 		expCost.Add(expCost, failRatio)
 		expCost.Add(expCost, replacement)
@@ -246,7 +272,7 @@ func overallCosts(input formData) string {
 	res := big.NewRat(0, 1)
 	nextCosts = make(map[int]*big.Rat)
 	for i := input.Start; i < input.End; i++ {
-		res.Add(res, nextStarCost(input.Level, input.rCost, i))
+		res.Add(res, nextStarCost(input, i))
 	}
 	ac := accounting.Accounting{Symbol: "", Precision: 2}
 	return ac.FormatMoney(res)
@@ -334,8 +360,15 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			if b, _ := regexp.MatchString(`^[0-9]+`, r.Form["rcost"][0]); !b {
 				p.Amount = "Please enter a non-negative, numeric replacement cost"
 			} else {
+				events := [3]string{p.Event1, p.Event2, p.Event3}
+				safeguards := [5]string{
+					p.Safeguards1,
+					p.Safeguards2,
+					p.Safeguards3,
+					p.Safeguards4,
+					p.Safeguards5}
 				rcost, _ := strconv.ParseInt(r.Form["rcost"][0], 10, 64)
-				input := formData{level, rcost, start, end}
+				input := formData{level, safeguards, rcost, events, start, end}
 				p.Amount = "Expected cost is " + overallCosts(input) + " mesos"
 			}
 		}
